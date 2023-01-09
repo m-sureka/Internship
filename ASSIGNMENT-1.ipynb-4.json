@@ -1,0 +1,1381 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "75776fe0",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "!pip install bs4\n",
+    "!pip install requests"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e08849a8",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from bs4 import BeautifulSoup\n",
+    "import requests"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1ac27592",
+   "metadata": {},
+   "source": [
+    "QUESTION-1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "73b443bd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "page=requests.get('https://www.wikipedia.org/')\n",
+    "page"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f782f11f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "soup=BeautifulSoup(page.content)\n",
+    "soup"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "238f7fed",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "header=[]\n",
+    "for i in soup.find_all('h1',class_='central-textlogo-wrapper'):\n",
+    "    header.append(i.text.split('\\n'))\n",
+    "header"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b034999b",
+   "metadata": {},
+   "source": [
+    "QUESTION-2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1e0e6a54",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "page=requests.get('https://www.imdb.com/list/ls055592025/')\n",
+    "page"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9a70f573",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "soup=BeautifulSoup(page.content)\n",
+    "soup"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5deedf5b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "titles=[]\n",
+    "for i in soup.find_all('h3',class_='lister-item-header'):\n",
+    "    titles.append(i.text.split('\\n')[2])\n",
+    "titles"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8635ffbd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "year=[]\n",
+    "for i in soup.find_all('span',class_='lister-item-year text-muted unbold'):\n",
+    "    year.append(i.text)\n",
+    "year"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8dfd1832",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ratings=[]\n",
+    "for i in soup.find_all('div',class_='ipl-rating-widget'):\n",
+    "    ratings.append(i.text.split('\\n')[9])\n",
+    "ratings"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5fc91cdf",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "df=pd.DataFrame({'Titles':titles,'Ratings':ratings,'Year of release':year})\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "da73e6b1",
+   "metadata": {},
+   "source": [
+    "QUESTION-3"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d1313843",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "page=requests.get('https://www.imdb.com/list/ls561664100/')\n",
+    "page"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6bafa49d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "soup=BeautifulSoup(page.content)\n",
+    "soup"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2979cc10",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "titles=[]\n",
+    "for i in soup.find_all('h3',class_='lister-item-header'):\n",
+    "    titles.append(i.text.split('\\n')[2])\n",
+    "year=[]\n",
+    "for i in soup.find_all('span',class_='lister-item-year text-muted unbold'):\n",
+    "    year.append(i.text)\n",
+    "ratings=[]\n",
+    "for i in soup.find_all('div',class_='ipl-rating-widget'):\n",
+    "    ratings.append(i.text.split('\\n')[9])\n",
+    "df=pd.DataFrame({'Titles':titles,'Ratings':ratings,'Year of release':year})\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3eae3670",
+   "metadata": {},
+   "source": [
+    "QUESTION-4"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b4f71627",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "page=requests.get('https://presidentofindia.nic.in/former-presidents.htm')\n",
+    "page"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ab60336b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "soup=BeautifulSoup(page.content)\n",
+    "soup"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ece8908f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "names=[]\n",
+    "for i in soup.find_all('div',class_='presidentListing'):\n",
+    "    names.append(i.text.split('\\n')[1])\n",
+    "year=[]\n",
+    "for i in soup.find_all('div',class_='presidentListing'):\n",
+    "    year.append(i.text.split('\\n')[2])\n",
+    "df=pd.DataFrame({'Names':names,'Term of Office':year})\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1b7c14ee",
+   "metadata": {},
+   "source": [
+    "QUESTION-5"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bd2b29ee",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "page=requests.get('https://www.icc-cricket.com/rankings/mens/team-rankings/odi')\n",
+    "page"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8835bebe",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "soup=BeautifulSoup(page.content)\n",
+    "soup"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bd1758f1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "team=[]\n",
+    "for i in soup.find_all('span',class_='u-hide-phablet'):\n",
+    "    team.append(i.text)\n",
+    "team"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "32cee0df",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "match=[]\n",
+    "for i in soup.find_all('td',class_='rankings-block__banner--matches'):\n",
+    "    match.append(i.text)\n",
+    "match"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5b3c2947",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "matches1=[]\n",
+    "for i in soup.find_all('td',class_='table-body__cell u-center-text'):\n",
+    "    matches1.append(i.text.split(','))\n",
+    "matches1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "89389437",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "matches=[]\n",
+    "points=[]\n",
+    "for i in range(0,len(matches1)-1,2):\n",
+    "    matches.append(matches1[i])\n",
+    "    points.append(matches1[i+1])\n",
+    "points"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "af437563",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "matches"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4758c8bc",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list1=match\n",
+    "list2=matches\n",
+    "merged=list1+list2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e8fe0ffd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "merged"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5f38f21c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "point=[]\n",
+    "for i in soup.find_all('td',class_='rankings-block__banner--points'):\n",
+    "    point.append(i.text)\n",
+    "point"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0e230074",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list1=point\n",
+    "list2=points\n",
+    "merged_p=list1+list2\n",
+    "merged_p"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9d864327",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df=pd.DataFrame({'Team Names':team,'Matches':merged,'Points':merged_p})\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6e907089",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df=df.iloc[0:10,:]\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e64ff3a5",
+   "metadata": {},
+   "source": [
+    "5B"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0009d85e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "page=requests.get('https://www.icc-cricket.com/rankings/mens/player-rankings/odi')\n",
+    "page"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "cffa863f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "soup=BeautifulSoup(page.content)\n",
+    "soup"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "78f4a3dd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "name=[]\n",
+    "for i in soup.find_all('div',class_='rankings-block__banner--name'):\n",
+    "    name.append(i.text)\n",
+    "name"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3200924a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "team=[]\n",
+    "for i in soup.find_all('div',class_='rankings-block__banner--nationality'):\n",
+    "    team.append(i.text.split('\\n')[2])\n",
+    "team"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1df6cfb5",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "rating=[]\n",
+    "for i in soup.find_all('div',class_='rankings-block__banner--rating'):\n",
+    "    rating.append(i.text)\n",
+    "rating"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "eb15d159",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df=pd.DataFrame({'Name':name,'Team':team,'Rating':rating})\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d8bcbdbd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "names=[]\n",
+    "for i in soup.find_all('td',class_='table-body__cell name'):\n",
+    "    names.append(i.text.split(\"\\n\")[1])\n",
+    "names"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c5753dfd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "teams=[]\n",
+    "for i in soup.find_all('span',class_='table-body__logo-text'):\n",
+    "    teams.append(i.text)\n",
+    "teams"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "73b6b86c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ratings=[]\n",
+    "for i in soup.find_all('td',class_='table-body__cell u-text-right rating'):\n",
+    "    ratings.append(i.text)\n",
+    "ratings"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "03f978ad",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list1=['Babar Azam']\n",
+    "list2=names\n",
+    "merge_n=list1+list2\n",
+    "merge_n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2f3a2175",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list1=['PAK']\n",
+    "list2=teams\n",
+    "merge_t=list1+list2\n",
+    "merge_t"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "08e8cc95",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list1=['890']\n",
+    "list2=ratings\n",
+    "merge_r=list1+list2\n",
+    "merge_r"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f65b8cb4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df=pd.DataFrame({'Names':merge_n,'Teams':merge_t,'Ratings':merge_r})\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ee0471b8",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df1=df.iloc[0:10,:]\n",
+    "df1"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3cf874d7",
+   "metadata": {},
+   "source": [
+    "5C"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "948e6a12",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df2=df.iloc[10:19,:]\n",
+    "df2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "485cfe8a",
+   "metadata": {},
+   "source": [
+    "6A"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f5be2123",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "page=requests.get('https://www.icc-cricket.com/rankings/womens/team-rankings/odi')\n",
+    "page"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b8fe2621",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "soup=BeautifulSoup(page.content)\n",
+    "soup"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "30a2647c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "team=[]\n",
+    "for i in soup.find_all('span',class_='u-hide-phablet'):\n",
+    "    team.append(i.text)\n",
+    "team"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a8b878f1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "match=[]\n",
+    "for i in soup.find_all('td',class_='rankings-block__banner--matches'):\n",
+    "    match.append(i.text)\n",
+    "match"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d1a218bf",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "point=[]\n",
+    "for i in soup.find_all('td',class_='rankings-block__banner--points'):\n",
+    "    point.append(i.text)\n",
+    "point"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "329ea1fd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "matches=[]\n",
+    "for i in soup.find_all('td',class_='table-body__cell u-center-text'):\n",
+    "    matches.append(i.text)\n",
+    "matches"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3fc5e9f7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "matches1=[]\n",
+    "points1=[]\n",
+    "for i in range(0,len(matches)-1,2):\n",
+    "    matches1.append(matches[i])\n",
+    "    points1.append(matches[i+1])\n",
+    "points1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c35141de",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "matches1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0757cb66",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "rating=[]\n",
+    "for i in soup.find_all('td',class_='rankings-block__banner--rating u-text-right'):\n",
+    "    rating.append(i.text.split('\\n')[1])\n",
+    "rating"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "81263309",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ratings=[]\n",
+    "for i in soup.find_all('td',class_='table-body__cell u-text-right rating'):\n",
+    "    ratings.append(i.text)\n",
+    "ratings"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a44d7f31",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list1=match\n",
+    "list2=matches1\n",
+    "matches_m=list1+list2\n",
+    "matches_m"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2ca4de2f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list1=point\n",
+    "list2=points1\n",
+    "points_m=list1+list2\n",
+    "points_m"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7493c89f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list1=rating\n",
+    "list2=ratings\n",
+    "ratings_m=list1+list2\n",
+    "ratings_m"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4fcd5d08",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df=pd.DataFrame({'Team Names':team,'Matches':matches_m,'Points':points_m,'Ratings':ratings_m})\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4e3360ac",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.iloc[0:10,:]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "79332eb6",
+   "metadata": {},
+   "source": [
+    "6B"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7ac0964b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "page=requests.get('https://www.icc-cricket.com/rankings/womens/player-rankings/odi')\n",
+    "page"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d5bf0940",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "soup=BeautifulSoup(page.content)\n",
+    "soup"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "20621ef8",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "player=[]\n",
+    "for i in soup.find_all('div',class_='rankings-block__banner--name'):\n",
+    "    player.append(i.text)\n",
+    "player"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d29bf141",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "team=[]\n",
+    "for i in soup.find_all('div',class_='rankings-block__banner--nationality'):\n",
+    "    team.append(i.text.split('\\n')[2])\n",
+    "team"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6bd700bd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "team=[]\n",
+    "for i in soup.find_all('div',class_='rankings-block__banner--nationality'):\n",
+    "    team.append(i.text.split('\\n')[3])\n",
+    "team"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "61c1fd49",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "players=[]\n",
+    "for i in soup.find_all('td',class_='table-body__cell name'):\n",
+    "    players.append(i.text.split('\\n')[1])\n",
+    "players"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "43e20963",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "teams=[]\n",
+    "for i in soup.find_all('td',class_='table-body__cell nationality-logo'):\n",
+    "    teams.append(i.text.split('\\n')[2])\n",
+    "teams"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "de3e1331",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ratings=[]\n",
+    "for i in soup.find_all('td',class_='table-body__cell u-text-right rating'):\n",
+    "    ratings.append(i.text)\n",
+    "ratings"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e32f6997",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list1=['Alyssa Healy']\n",
+    "list2=players\n",
+    "players_m=list1+list2\n",
+    "players_m"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "13a73357",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list1=['AUS']\n",
+    "list2=teams\n",
+    "teams_m=list1+list2\n",
+    "teams_m"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c466127d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list1=['785']\n",
+    "list2=ratings\n",
+    "ratings_m=list1+list2\n",
+    "ratings_m"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "25a41679",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df=pd.DataFrame({'Player Name':players_m,'Team':teams_m,'Rating':ratings_m})\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ca40195c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.iloc[0:10,:]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "be17480d",
+   "metadata": {},
+   "source": [
+    "6C"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "db8406c1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "players=[]\n",
+    "for i in soup.find_all('td','table-body__cell name'):\n",
+    "    players.append(i.text.split('\\n')[1])\n",
+    "players"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "64ff5af2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "teams=[]\n",
+    "for i in soup.find_all('td',class_='table-body__cell nationality-logo'):\n",
+    "    teams.append(i.text.split('\\n')[2])\n",
+    "teams"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1f25d423",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ratings=[]\n",
+    "for i in soup.find_all('td',class_='table-body__cell u-text-right rating'):\n",
+    "    ratings.append(i.text)\n",
+    "ratings"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f0cf56d1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df=pd.DataFrame({'Player Name':players,'Team':teams,'Ratings':ratings})\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "24a3c1e3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.iloc[18:27,:]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ea1b5ee1",
+   "metadata": {},
+   "source": [
+    "7A"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b442be17",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "page=requests.get('https://www.cnbc.com/world/?region=world')\n",
+    "page"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2b7bf3d4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "soup=BeautifulSoup(page.content)\n",
+    "soup"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "66851cc1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "headline=[]\n",
+    "for i in soup.find_all('div',class_='FeaturedCard-contentText'):\n",
+    "    headline.append(i.text)\n",
+    "headline"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7cbf8cde",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "headlines=[]\n",
+    "for i in soup.find_all('div',class_='SecondaryCard-headline'):\n",
+    "    headlines.append(i.text)\n",
+    "headlines"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "726d6ba2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "head1=[]\n",
+    "for i in soup.find_all('div',class_='RiverHeadline-headline RiverHeadline-hasThumbnail'):\n",
+    "    head1.append(i.text)\n",
+    "head1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "82baee94",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list1=headline\n",
+    "list2=headlines\n",
+    "list3=head1\n",
+    "head_m=list1+list2+list3\n",
+    "head_m"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7ad05e1a",
+   "metadata": {},
+   "source": [
+    "8(i)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "fa16146f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "page=requests.get('https://www.journals.elsevier.com/artificial-intelligence/most-downloaded-articles')\n",
+    "page"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c0fcfa25",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "soup=BeautifulSoup(page.content)\n",
+    "soup"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "21058c26",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "name=[]\n",
+    "for i in soup.find_all('h2',class_='sc-1qrq3sd-1 gRGSUS sc-1nmom32-0 sc-1nmom32-1 btcbYu goSKRg'):\n",
+    "    name.append(i.text)\n",
+    "name"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7adb96dc",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "author=[]\n",
+    "for i in soup.find_all('span',class_='sc-1w3fpd7-0 dnCnAO'):\n",
+    "    author.append(i.text)\n",
+    "author"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3e91827b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "date=[]\n",
+    "for i in soup.find_all('span',class_='sc-1thf9ly-2 dvggWt'):\n",
+    "    date.append(i.text)\n",
+    "date"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e7b2f9f4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "url=[]\n",
+    "for i in soup.find_all('article',class_='sc-5smygv-0 fIXTHm'):\n",
+    "    url.append(i.text)\n",
+    "url"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5a721d93",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df=pd.DataFrame({'Paper Title':name,'Author':author,'Date of Publish':date})\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d1a1b713",
+   "metadata": {},
+   "source": [
+    "9"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9b131e30",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "page=requests.get('https://www.dineout.co.in/delhi-restaurants/buffet-special')\n",
+    "page"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f51bc59d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "soup=BeautifulSoup(page.content)\n",
+    "soup"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "61abf14f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "titles=[]\n",
+    "for i in soup.find_all('a',class_='restnt-name ellipsis'):\n",
+    "    titles.append(i.text)\n",
+    "\n",
+    "titles"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5b17fbca",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "location=[]\n",
+    "for i in soup.find_all('div',class_='restnt-loc ellipsis'):\n",
+    "    location.append(i.text)\n",
+    "\n",
+    "location"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "80be2fd7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cuisine=[]\n",
+    "for i in soup.find_all('span',class_='double-line-ellipsis'):\n",
+    "    cuisine.append(i.text)\n",
+    "\n",
+    "cuisine"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0a56724e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "images=[]\n",
+    "for i in soup.find_all('img',class_='no-img'):\n",
+    "    images.append(i.get('data-src'))\n",
+    "images"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1aa8ff72",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "rating=[]\n",
+    "for i in soup.find_all('div',class_='restnt-rating rating-4'):\n",
+    "    rating.append(i.text)\n",
+    "rating"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7b305af3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "df=pd.DataFrame({'Titles':titles,'Locations':location,'Price and Cuisine':cuisine,'Ratings':rating,'Image_url':images})\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "8c72b967",
+   "metadata": {},
+   "source": [
+    "10"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e10e32e1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "page=requests.get('https://scholar.google.com/citations?view_op=top_venues&hl=en')\n",
+    "page"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4794d968",
+   "metadata": {},
+   "source": [
+    "RESPONSE IS NOT 200, WE CANNOT SCRAPE DATA FROM THIS WEBSITE"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e00f6512",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.12"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
